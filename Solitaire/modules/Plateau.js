@@ -1,3 +1,4 @@
+import { Case } from './Case.js';
 /**
  * Plateu de jeu, où les cases sont dessinées
  */
@@ -9,15 +10,28 @@ export class Plateau {
      */
     constructor(nb, taille, plateau) {
             this.cases = new Array(); // On crée un tableau qui va liste les cases disponibles
+            this.resultat = new Array(nb);
+
             this.plateau = plateau; // On sauvegarde l'élément HTML du plateau dans une variable de la classe
             this.plateau.style.width = Math.sqrt(nb) * taille + 'px';
-            this.creeCases(nb, taille);
+            this.creeCases(nb, taille); // Initialiser les cases en fonction des paramètres donnés dans la classe
 
+            this.joueur = false; // Joueur 1 ou 2, false, true
+
+            // Ecouter l'événement case envoyé par... les cases lorsqu'elles sont cliquées
+            addEventListener('case',
+                (e) => {
+                    // Si la case n'a pas été cochée, on la coche
+                    if (this.resultat[e.detail.id] == undefined) {
+                        this.cases[e.detail.id].ajouteContenu(this.setJoueur());
+                        this.setResultat(e.detail.id, e.detail.statut);
+                    }
+                }, false);
         }
         /**
          * 
          * @param {number} nb Nombre de cases à créer, reçu à l'instanciation de la classe
-         * @param {*} t Taille de la case à créer
+         * @param {number} t Taille de la case à créer
          */
     creeCases(nb, t) {
             for (let i = 0; i < nb; ++i) {
@@ -30,32 +44,30 @@ export class Plateau {
          * @param {Case} c Une case à dessiner sur le plateau de jeu
          */
     setPlateau(c) {
-        this.cases.push(c);
-        this.plateau.appendChild(c.afficheCase());
+            this.cases.push(c);
+            this.plateau.appendChild(c.afficheCase());
+        }
+        /**
+         * Modifier le joueur à chaque coup, joueur 1 (false) puis joueur 2 (true). Alternance à chaque fois que la fonction est appelée
+         */
+    setJoueur() {
+            this.joueur = !this.joueur;
+            return this.joueur;
+        }
+        /**
+         * 
+         * @param {number} id ID de la case cochée pour identifier dans le tableau des résultats quel entrée changer
+         * @param {string} st Valeur à insérer dans le tableau
+         */
+    setResultat(id, st) {
+            this.resultat[id] = st;
+        }
+        /**
+         * Tester si un joueur à gagné
+         */
+    testScore() {
+
     }
 }
 
-/**
- * Créer une case de jeu avec ses évanements
- * @class
- */
-export class Case {
-    /**
-     * Créer des cases sur la plateau
-     * @param id Id de la case créée
-     * @param {number} taille Taille de la case créée
-     */
-    constructor(id, taille) {
-            this.id = id;
-            this.taille = taille;
-            this.clique = false; // La case a-t-elle été cliquée ?
-        }
-        /**
-         * Créer une case et la renvoyer au plateau
-         */
-    afficheCase() {
-        let el = document.createElement('article');
-        el.setAttribute("id", this.id);
-        return el;
-    }
-}
+var plateau = new Plateau(9, 200, document.querySelector('section'));

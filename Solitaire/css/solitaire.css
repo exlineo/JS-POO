@@ -9,6 +9,7 @@ body {
 body {
     display: flex;
     background-color: #000;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 section {
@@ -23,10 +24,10 @@ section {
 article {
     min-height: 200px;
     min-width: 200px;
-    background: linear-gradient(217deg, rgba(255, 0, 0, .8), rgba(255, 0, 0, 0) 70.71%), linear-gradient(127deg, rgba(0, 255, 0, .8), rgba(0, 255, 0, 0) 70.71%), linear-gradient(336deg, rgba(0, 0, 255, .8), rgba(0, 0, 255, 0) 70.71%);
+    background: linear-gradient(135deg, #f2f6f8 0%, #d8e1e7 50%, #b5c6d0 51%, #e0eff9 100%);
     text-align: center;
-    color: #fff;
-    font-size: 48px;
-    font-weight: bold;
+    color: #000;
+    font-size: 160px;
     line-height: 200px;
+    cursor: pointer;
 }
