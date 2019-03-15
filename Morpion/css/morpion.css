@@ -31,3 +31,14 @@ article {
     line-height: 200px;
     cursor: pointer;
 }
+
+#message {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: #FFF;
+    text-shadow: 1px 1px 3px #000;
+    font-weight: bold;
+}
