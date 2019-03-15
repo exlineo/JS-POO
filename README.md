@@ -1,2 +1,2 @@
 # JS-POO
-Programmation objet ECMA6
+Quelques exercices pour découvrir la programmation de classes avec Javascript
