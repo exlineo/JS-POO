@@ -19,8 +19,6 @@ export class Case {
 
             // Ajouter un événement à la case
             this.el.onclick = (e) => {
-                console.log("coucou", this.el);
-
                 // Créer un événement pour envoyer l'information qu'une case a été cochée avec son ID (cf. Mecanique)
                 let caseCocheeEvent = new CustomEvent('case', { detail: { 'id': this.id } });
                 dispatchEvent(caseCocheeEvent);
@@ -37,16 +35,11 @@ export class Case {
          * @param {boolean} coche Dire s'il faut écrire une croix (true) ou un rond (false)
          */
     ajouteContenu(joueur) {
-        console.log(joueur);
-        // if (this.statut == '') {
         if (joueur) {
             this.statut = 'X';
         } else {
             this.statut = 'O';
         }
-        // } else {
-        //     this.statut = '';
-        // }
         this.el.innerText = this.statut;
         return this.statut;
     }

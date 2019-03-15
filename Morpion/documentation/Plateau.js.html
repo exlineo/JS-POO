@@ -28,19 +28,20 @@
         <article>
             <pre class="prettyprint source linenums"><code>import { Case } from './Case.js';
 import { Affichage } from './Affichage.js';
-
 /**
  * Plateu de jeu, où les cases sont dessinées
+ * @class
  */
 export class Plateau {
     /**
      * @param {number} nb Déterminer le nombre de cases du plateau
      * @param {number} taille Déterminer la taille des cases du plateau
-     * @param {htmlElement} plateau La balise HTML dans laquelle nous tracerons les cases
+     * @param {HTMLElement} plateau La balise HTML dans laquelle nous tracerons les cases
      */
     constructor(nb, taille, plateau) {
             this.cases = new Array(); // On crée un tableau qui va liste les cases disponibles
-            this.resultat = new Array(nb);
+            this.resultat = new Array(nb); // Le tableau qui va recevoir toutes les réponses
+            this.reponses = 0; // Comptabilité des réponses faites
 
             this.plateau = plateau; // On sauvegarde l'élément HTML du plateau dans une variable de la classe
             this.plateau.style.width = Math.sqrt(nb) * taille + 'px';
@@ -53,10 +54,13 @@ export class Plateau {
                 (e) => {
                     // Si la case n'a pas été cochée, on la coche
                     if (this.resultat[e.detail.id] == undefined) {
-                        this.cases[e.detail.id].ajouteContenu(this.setJoueur());
-                        this.setResultat(e.detail.id, e.detail.statut);
+                        let tmp_statut = this.cases[e.detail.id].ajouteContenu(this.setJoueur());
+                        this.setResultat(e.detail.id, tmp_statut);
                     }
                 }, false);
+
+            this.affichage = new Affichage();
+            this.affichage.setTexte('&lt;h1>Bienvenue&lt;/h1>&lt;p>Cochez les cases et essayez de faire une ligne&lt;/p>');
         }
         /**
          * Créer n cases sur le plateau (éviter les nombres premiers... et préférer les carrés (²))
@@ -85,18 +89,69 @@ export class Plateau {
             return this.joueur;
         }
         /**
-         * Opérer le calcul du résultat à chaque fois qu'une case est cochée pour vérifier s'il y a un gagnant
+         * Met à jour une entrée dans le tableau des résultats avant de le tester
          * @param {number} id ID de la case cochée pour identifier dans le tableau des résultats quel entrée changer
          * @param {string} st Valeur à insérer dans le tableau
          */
     setResultat(id, st) {
             this.resultat[id] = st;
+            this.testScore();
         }
         /**
-         * Tester si un joueur à gagné
+         * Tester si un joueur à gagné en checkant le tableau des résultats
+         * Bon, il faudrait améliorer ce code pas terrible. Je compte sur vous.
          */
     testScore() {
+        this.reponses++;
+        let tmp = this.resultat.toString();
+        let res = this.resultat;
+        // let reg = /X/g;
+        let ok = false;
 
+        if (res[0] != undefined &amp;&amp; res[0] == res[1] &amp;&amp; res[1] == res[2]) {
+            ok = true;
+            console.log("Colonne 1 faite");
+        }
+
+        if (res[3] != undefined &amp;&amp; res[3] == res[4] &amp;&amp; res[4] == res[5]) {
+            ok = true;
+            console.log("Colonne 1 faite");
+        }
+        if (res[6] != undefined &amp;&amp; res[6] == res[7] &amp;&amp; res[7] == res[8]) {
+            ok = true;
+            console.log("Colonne 1 faite");
+        }
+
+        if (res[0] != undefined &amp;&amp; res[0] == res[3] &amp;&amp; res[3] == res[6]) {
+            ok = true;
+            console.log("Colonne 1 faite");
+        }
+
+        if (res[1] != undefined &amp;&amp; res[1] == res[4] &amp;&amp; res[4] == res[7]) {
+            ok = true;
+            console.log("Colonne 2 faite");
+        }
+
+        if (res[2] != undefined &amp;&amp; res[2] == res[5] &amp;&amp; res[5] == res[8]) {
+            ok = true;
+            console.log("Colonne 3 faite");
+        }
+
+        if (res[0] != undefined &amp;&amp; res[0] == res[4] &amp;&amp; res[4] == res[8]) {
+            ok = true;
+            console.log("Diagonale gauche / droite faite");
+        }
+
+        if (res[2] != undefined &amp;&amp; res[2] == res[4] &amp;&amp; res[4] == res[6]) {
+            ok = true;
+            console.log("Diagonale droite / gauche faite");
+        }
+        console.log(this.reponses);
+        if (ok) {
+            this.affichage.setTexte("&lt;h1>C'est fini !&lt;/h1>&lt;p>Bravo pour cette victoire&lt;/p>");
+        } else if (this.reponses >= 8) {
+            this.affichage.setTexte("&lt;h1>C'est fini !&lt;/h1>&lt;p>Malheureusement personne n'a gagné&lt;/p>");
+        }
     }
 }
 
@@ -110,13 +165,13 @@ var plateau = new Plateau(9, 200, document.querySelector('section'));</code></pr
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Affichage.html">Affichage</a></li><li><a href="Case.html">Case</a></li><li><a href="Plateau.html">Plateau</a></li></ul><h3>Global</h3><ul><li><a href="global.html#afficheCaseCr%25C3%25A9erunecaseetlarenvoyerauplateau">afficheCase Créer une case et la renvoyer au plateau</a></li><li><a href="global.html#ajouteContenuRenvoieunecroixouunronddanslacase">ajouteContenu Renvoie une croix ou un rond dans la case</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Affichage.html">Affichage</a></li><li><a href="Case.html">Case</a></li><li><a href="Plateau.html">Plateau</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Mar 15 2019 21:52:12 GMT+0100 (Paris, Madrid)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Mar 16 2019 00:20:19 GMT+0100 (Paris, Madrid)
 </footer>
 
 <script> prettyPrint(); </script>
