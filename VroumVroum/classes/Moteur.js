@@ -1,8 +1,12 @@
 /**
- * @Class Définir le moteur d'une voiture (hérité)
+ * Définir le moteur d'une voiture (hérité)
+ * @Class Moteur
  */
 class Moteur {
-
+    /**
+     * Initialisation de la classe Moteur, injection (^^) d'un moteur...
+     * @param {string} motorisation 
+     */
     constructor(motorisation) {
             this.motorisation = motorisation;
         }

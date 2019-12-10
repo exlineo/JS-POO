@@ -1,5 +1,7 @@
 /**
- * @Class Classe définissant une voiture
+ * Classe définissant une voiture
+ * @Class Voiture 
+ * @extends Moteur
  */
 class Voiture extends Moteur {
     /**
@@ -32,9 +34,6 @@ class Voiture extends Moteur {
         `;
         console.log(this.message);
         this.message.appendChild(el);
-    }
-    ajouteArticle() {
-
     }
 }
 
